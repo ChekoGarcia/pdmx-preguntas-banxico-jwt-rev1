@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="JS-JWT-CLAIM">
+    <DisplayName>JS-JWT-CLAIM</DisplayName>
+    <Properties/>
+    <ResourceURL>jsc://js-jwt-claim.js</ResourceURL>
+</Javascript>

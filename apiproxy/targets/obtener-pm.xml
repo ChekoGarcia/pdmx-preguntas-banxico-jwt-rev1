@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="obtener-pm">
+    <Description/>
+    <FaultRules/>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>AM-DELETE-PATHSUFGFIX</Name>
+            </Step>
+            <Step>
+                <Name>AM-HeaderAccess</Name>
+            </Step>
+        </Request>
+        <Response>
+            <Step>
+                <Name>AM-AddCORS</Name>
+            </Step>
+        </Response>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <Step>
+                <Name>JS-JWT-CLAIM</Name>
+            </Step>
+            <Step>
+                <Name>Generate-JWT-1</Name>
+            </Step>
+            <Step>
+                <Name>Add-JWT-Header</Name>
+            </Step>
+            <Step>
+                <Name>JS-JWT-VALIDATION</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+    <Flows/>
+    <HTTPTargetConnection>
+        <Properties>
+            <Property name="success.codes">1xx,2xx,3xx,4xx,5xx</Property>
+        </Properties>
+        <LoadBalancer>
+            <Server name="target_pdmx"/>
+        </LoadBalancer>
+        <Path>/{private.context.sf}/get/preguntasPM</Path>
+    </HTTPTargetConnection>
+    <DefaultFaultRule name="default-fault">
+        <Step>
+            <Name>FC-SF-Collect-Log-Data</Name>
+            <Condition>proxy_settings.logging_enabled == true</Condition>
+        </Step>
+        <AlwaysEnforce>true</AlwaysEnforce>
+    </DefaultFaultRule>
+</TargetEndpoint>

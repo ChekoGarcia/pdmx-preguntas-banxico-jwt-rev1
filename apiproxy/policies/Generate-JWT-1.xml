@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GenerateJWT async="false" continueOnError="false" enabled="true" name="Generate-JWT-1">
+    <DisplayName>Generate JWT-1</DisplayName>
+    <Type>Signed</Type>
+    <Algorithm>HS256</Algorithm>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <SecretKey>
+        <Value ref="private.jwt_secret_key"/>
+        <Id>LOGIN-JWT</Id>
+    </SecretKey>
+    <ExpiresIn>120m</ExpiresIn>
+    <AdditionalClaims>
+        <Claim name="idMatch" ref="idMatch"/>
+        <Claim name="nperscve" ref="nperscve"/>
+        <Claim name="isAuthenticated" ref="isAuthenticated"/>
+    </AdditionalClaims>
+    <OutputVariable>jwt-variable</OutputVariable>
+    <DisplayName>JWT-Generate-HS256</DisplayName>
+</GenerateJWT>

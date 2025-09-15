@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="EV-Headers">
+    <DisplayName>EV-Headers</DisplayName>
+    <Header name="x-signature">
+        <Pattern ignoreCase="false">{xSignature}</Pattern>
+    </Header>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <Source clearPayload="false">request</Source>
+    <VariablePrefix>header_required</VariablePrefix>
+</ExtractVariables>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FlowCallout async="false" continueOnError="false" enabled="true" name="FC-SF-Collect-Log-Data">
+    <DisplayName>FC-SF-Collect-Log-Data</DisplayName>
+    <Parameters>
+        <Parameter name="flow" value='DEFAULT_FAULT_RULE' />
+    </Parameters>
+    <SharedFlowBundle>SF-Collect-Log-Data</SharedFlowBundle>
+</FlowCallout>

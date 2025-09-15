@@ -1,0 +1,1439 @@
+openapi: 3.0.0
+info:
+  description: "<p>API de Preguntas Banxico. <br/><br><img src='https://developer.circulodecredito.com.mx/sites/default/files/2024-01/Logo-Swaggers.png' height='70' width='270'/></p><br/>"
+  version: 1.0.0
+  title: Preguntas Banxico API
+  termsOfService: https://developer.circulodecredito.com.mx/terms-use
+  contact:
+    email: api@circulodecredito.com.mx
+  license:
+    name: 'Derechos reservados Circulo de Crédito 2020'
+    url: 'http://www.circulodecredito.com.mx'
+servers:
+  - url: 'https://circulodecredito-dev.apigee.net/v1/preguntas'
+security:
+  - x-api-key: []
+    x-signature: []
+    username: []
+    password: []
+    Authorization: []
+    
+paths:
+  '/obtener':
+    options:
+      summary: ''
+      description: ''
+      tags:
+        - 'obtener'
+      responses:
+        '200':
+          description: 'OK'
+        '403':
+          description: 'FORBIDDEN'
+    post:
+      summary: ''
+      description: 'Se entrega el dato totalizado en la mismo API de consulta.'
+      tags: 
+        - 'obtener'
+      operationId: 'obtener'
+      parameters:
+        - name: x-signature
+          in: header
+          description: Firma generada con la llave privada
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: x-api-key
+          in: header
+          description: ConsumerKey obtenido desde el portal de desarrolladores
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: username
+          in: header
+          description: Usuario de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: password
+          in: header
+          description: Contraseña de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: JWT de autorizacion de sesion
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestObtener'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaObtener'
+        204:
+          description: NO CONTENT
+          content: {}
+        400:
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "400"
+                  mensaje: El campo [nombre_campo] es requerido
+                - codigo: "400"
+                  mensaje: El código postal no corresponde al estado.
+                - codigo: "400.4"
+                  mensaje: Petición incorrecta el x-signature es requerido.
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "401.1"
+                  mensaje: Acceso no autorizado, x-api-key no válida.
+                - codigo: "401.1"
+                  mensaje: Las credenciales de acceso no son correctas.
+                - codigo: "401.2"
+                  mensaje: Acceso no autorizado.
+                - codigo: "401.3"
+                  mensaje: Acceso no autorizado, no tiene el producto asociado.
+                - codigo: "401.4"
+                  mensaje: Acceso no autorizado, no tiene acceso al recurso.
+        403:
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "403"
+                    mensaje: Acceso denegado
+                  - codigo: "403.1"
+                    mensaje: No se pudo autenticar, x-signature no es válida.
+                  - codigo: "403.2"
+                    mensaje: No se pudo autenticar.
+        404:
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "404.1"
+                  mensaje: No se encontró a la persona.
+        405:
+          description: METHOD NOT ALLOWED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                  errores:
+                  - codigo: "405.1"
+                    mensaje: Método no permitido.
+        415:
+          description: UNSUPPORTED MEDIA TYPE.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "415.1"
+                  mensaje: Medios no admitidos
+        429:
+          description: TOO MANY REQUESTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "429.1"
+                  mensaje: Se han enviado demasiadas solicitudes. Se debe esperar antes de realizar una nueva solicitud.
+        500:
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "500"
+                  mensaje: Ocurrio un error al procesar tu solicitud.
+                - codigo: "500.1"
+                  mensaje: Ocurrio un problema, inténtelo nuevamente más tarde.
+        503:
+          description: SERVICE UNAVAILABLE
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "503.1"
+                    mensaje: Servicio no disponible.
+      deprecated: false
+      x-codegen-request-body-name: obtener
+  '/autenticar':
+    options:
+      summary: ''
+      description: ''
+      tags:
+        - 'autenticar'
+      responses:
+        '200':
+          description: 'OK'
+        '403':
+          description: 'FORBIDDEN'
+    post:
+      summary: ''
+      description: 'Se entrega el dato totalizado en la mismo API de consulta.'
+      tags: 
+        - 'autenticar'
+      operationId: 'autenticar'
+      parameters:
+        - name: x-signature
+          in: header
+          description: Firma generada con la llave privada
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: x-api-key
+          in: header
+          description: ConsumerKey obtenido desde el portal de desarrolladores
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: username
+          in: header
+          description: Usuario de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: password
+          in: header
+          description: Contraseña de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: JWT de autorizacion de sesion
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAutenticar'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaAutenticar'
+        204:
+          description: NO CONTENT
+          content: {}
+        400:
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "400"
+                  mensaje: El campo [nombre_campo] es requerido
+                - codigo: "400"
+                  mensaje: El código postal no corresponde al estado.
+                - codigo: "400.4"
+                  mensaje: Petición incorrecta el x-signature es requerido.
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "401.1"
+                  mensaje: Acceso no autorizado, x-api-key no válida.
+                - codigo: "401.1"
+                  mensaje: Las credenciales de acceso no son correctas.
+                - codigo: "401.2"
+                  mensaje: Acceso no autorizado.
+                - codigo: "401.3"
+                  mensaje: Acceso no autorizado, no tiene el producto asociado.
+                - codigo: "401.4"
+                  mensaje: Acceso no autorizado, no tiene acceso al recurso.
+        403:
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "403"
+                    mensaje: Acceso denegado
+                  - codigo: "403.1"
+                    mensaje: No se pudo autenticar, x-signature no es válida.
+                  - codigo: "403.2"
+                    mensaje: No se pudo autenticar.
+        404:
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "404.1"
+                  mensaje: No se encontró a la persona.
+        405:
+          description: METHOD NOT ALLOWED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                  errores:
+                  - codigo: "405.1"
+                    mensaje: Método no permitido.
+        415:
+          description: UNSUPPORTED MEDIA TYPE.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "415.1"
+                  mensaje: Medios no admitidos
+        429:
+          description: TOO MANY REQUESTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "429.1"
+                  mensaje: Se han enviado demasiadas solicitudes. Se debe esperar antes de realizar una nueva solicitud.
+        500:
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "500"
+                  mensaje: Ocurrio un error al procesar tu solicitud.
+                - codigo: "500.1"
+                  mensaje: Ocurrio un problema, inténtelo nuevamente más tarde.
+        503:
+          description: SERVICE UNAVAILABLE
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "503.1"
+                    mensaje: Servicio no disponible.
+      deprecated: false
+      x-codegen-request-body-name: autenticar
+  '/obtener-pm':
+    options:
+      summary: ''
+      description: ''
+      tags:
+        - 'obtener-pm'
+      responses:
+        '200':
+          description: 'OK'
+        '403':
+          description: 'FORBIDDEN'
+    post:
+      summary: ''
+      description: 'Se entrega el dato totalizado en la mismo API de consulta.'
+      tags: 
+        - 'obtener-pm'
+      operationId: 'obtener-pm'
+      parameters:
+        - name: x-signature
+          in: header
+          description: Firma generada con la llave privada
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: x-api-key
+          in: header
+          description: ConsumerKey obtenido desde el portal de desarrolladores
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: username
+          in: header
+          description: Usuario de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: password
+          in: header
+          description: Contraseña de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: JWT de autorizacion de sesion
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPM'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaObtenerPM'
+        204:
+          description: NO CONTENT
+          content: {}
+        400:
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "400"
+                  mensaje: El campo [nombre_campo] es requerido
+                - codigo: "400"
+                  mensaje: El código postal no corresponde al estado.
+                - codigo: "400.4"
+                  mensaje: Petición incorrecta el x-signature es requerido.
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "401.1"
+                  mensaje: Acceso no autorizado, x-api-key no válida.
+                - codigo: "401.1"
+                  mensaje: Las credenciales de acceso no son correctas.
+                - codigo: "401.2"
+                  mensaje: Acceso no autorizado.
+                - codigo: "401.3"
+                  mensaje: Acceso no autorizado, no tiene el producto asociado.
+                - codigo: "401.4"
+                  mensaje: Acceso no autorizado, no tiene acceso al recurso.
+        403:
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "403"
+                    mensaje: Acceso denegado
+                  - codigo: "403.1"
+                    mensaje: No se pudo autenticar, x-signature no es válida.
+                  - codigo: "403.2"
+                    mensaje: No se pudo autenticar.
+        404:
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "404.1"
+                  mensaje: No se encontró a la persona.
+        405:
+          description: METHOD NOT ALLOWED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                  errores:
+                  - codigo: "405.1"
+                    mensaje: Método no permitido.
+        415:
+          description: UNSUPPORTED MEDIA TYPE.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "415.1"
+                  mensaje: Medios no admitidos
+        429:
+          description: TOO MANY REQUESTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "429.1"
+                  mensaje: 'Se han enviado demasiadas solicitudes. Se debe esperar antes de realizar una nueva solicitud.'
+        500:
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "500"
+                  mensaje: 'Ocurrio un error al procesar tu solicitud.'
+                - codigo: "500.1"
+                  mensaje: 'Ocurrio un problema, inténtelo nuevamente más tarde.'
+        503:
+          description: SERVICE UNAVAILABLE
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "503.1"
+                    mensaje: 'Servicio no disponible.'
+      deprecated: false
+      x-codegen-request-body-name: obtener-pm
+  '/autenticar-pm':
+    options:
+      summary: ''
+      description: ''
+      tags:
+        - 'autenticar-pm'
+      responses:
+        '200':
+          description: 'OK'
+        '403':
+          description: 'FORBIDDEN'
+    post:
+      summary: ''
+      description: 'Se entrega el dato totalizado en la mismo API de consulta.'
+      tags: 
+        - 'autenticar-pm'
+      operationId: 'autenticar-pm'
+      parameters:
+        - name: x-signature
+          in: header
+          description: Firma generada con la llave privada
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: x-api-key
+          in: header
+          description: ConsumerKey obtenido desde el portal de desarrolladores
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: username
+          in: header
+          description: Usuario de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: password
+          in: header
+          description: Contraseña de Círculo de Crédito
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: JWT de autorizacion de sesion
+          required: true
+          schema:
+            type: string
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAutenticarPM'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaAutenticar'
+        204:
+          description: NO CONTENT
+          content: {}
+        400:
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "400"
+                  mensaje: El campo [nombre_campo] es requerido
+                - codigo: "400"
+                  mensaje: El código postal no corresponde al estado.
+                - codigo: "400.4"
+                  mensaje: Petición incorrecta el x-signature es requerido.
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "401.1"
+                  mensaje: Acceso no autorizado, x-api-key no válida.
+                - codigo: "401.1"
+                  mensaje: Las credenciales de acceso no son correctas.
+                - codigo: "401.2"
+                  mensaje: Acceso no autorizado.
+                - codigo: "401.3"
+                  mensaje: Acceso no autorizado, no tiene el producto asociado.
+                - codigo: "401.4"
+                  mensaje: Acceso no autorizado, no tiene acceso al recurso.
+        403:
+          description: FORBIDDEN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "403"
+                    mensaje: Acceso denegado
+                  - codigo: "403.1"
+                    mensaje: No se pudo autenticar, x-signature no es válida.
+                  - codigo: "403.2"
+                    mensaje: No se pudo autenticar.
+        404:
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "404.1"
+                  mensaje: No se encontró a la persona.
+        405:
+          description: METHOD NOT ALLOWED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                  errores:
+                  - codigo: "405.1"
+                    mensaje: Método no permitido.
+        415:
+          description: UNSUPPORTED MEDIA TYPE.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "415.1"
+                  mensaje: Medios no admitidos
+        429:
+          description: TOO MANY REQUESTS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "429.1"
+                  mensaje: Se han enviado demasiadas solicitudes. Se debe esperar antes de realizar una nueva solicitud.
+        500:
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                - codigo: "500"
+                  mensaje: Ocurrio un error al procesar tu solicitud.
+                - codigo: "500.1"
+                  mensaje: Ocurrio un problema, inténtelo nuevamente más tarde.
+        503:
+          description: SERVICE UNAVAILABLE
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errores'
+              example:
+                errores:
+                  - codigo: "503.1"
+                    mensaje: Servicio no disponible.
+      deprecated: false
+      x-codegen-request-body-name: autenticar-pm
+components:
+  securitySchemes:
+    x-api-key:
+      type: apiKey
+      name: x-api-key
+      in: header
+    x-signature:
+      type: apiKey
+      name: x-signature
+      in: header
+    username:
+      type: apiKey
+      name: username
+      in: header
+    password:
+      type: apiKey
+      name: password
+      in: header
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+      
+  schemas:
+    Error:
+      type: object
+      description: error
+      properties:
+        codigo:
+          type: string
+          example: 400.1
+          description: Código de error.
+        mensaje:
+          type: string
+          example: El campo "{Campo}" es requerido.
+          description: Mensaje de error.
+    Errores:
+      type: object
+      properties:
+        errors:
+          type: array
+          description: List of errors.
+          items:
+            $ref: '#/components/schemas/Error'
+      description: A list of errors.
+    CatalogoPaisNacionalidad:
+      type: string
+      description: "<p>Objeto con la informacion del Pais:</p><p><table><thead><tr><th>nomCvePais</th><th>Pais</th><th>Nacionalidad</th><th>cvePais</th></tr></thead><tbody><tr><td>MX</td><td>México</td><td>Mexicana</td><td>1</td></tr><tr><td>ZA</td><td>Africa del Sur</td><td>Sudafricana</td><td>2</td></tr><tr><td>AN</td><td>Albania</td><td>Albania</td><td>3</td></tr><tr><td>DW</td><td>Alemania</td><td>Alemana</td><td>4</td></tr><tr><td>AD</td><td>Andorra</td><td>Andorra</td><td>5</td></tr><tr><td>AO</td><td>Angola</td><td>Angola</td><td>6</td></tr><tr><td>AI</td><td>Anguila</td><td>Anguila</td><td>7</td></tr><tr><td>AG</td><td>Antigua y Barbado</td><td>Antigua y Barbado</td><td>8</td></tr><tr><td>NN</td><td>Antillas Holandesas</td><td>Antillas Holandesas</td><td>9</td></tr><tr><td>SA</td><td>Arabia Saudita</td><td>Saudi Arabe</td><td>10</td></tr><tr><td>DZ</td><td>Argelia</td><td>Argelia</td><td>11</td></tr><tr><td>AT</td><td>Argentina</td><td>Argentina</td><td>12</td></tr><tr><td>AW</td><td>Arabia</td><td>Árabe</td><td>13</td><tr><tr><td>AS</td><td>Ascensión</td><td>Ascensión</td><td>14</td></tr><tr><td>AU</td><td>Australia</td><td>Australiana</td><td>15</td></tr><tr><td>DF</td><td>Austria</td><td>Austriaca</td><td>16</td></tr><tr><td>AX</td><td>Azores</td><td>Azores</td><td>17</td></tr><tr><td>BS</td><td>Bahamas</td><td>Bahamas</td><td>18</td></tr><tr><td>BH</td><td>Bahrein</td><td>Bahrein</td><td>19</td></tr><tr><td>BD</td><td>Bangladesh</td><td>Bangladesh</td><td>20</td></tr><tr><td>BB</td><td>Barbados</td><td>Barbados</td><td>21</td></tr><tr><td>BE</td><td>Bélgica</td><td>Bélgica</td><td>22</td></tr><tr><td>BZ</td><td>Belice</td><td>Belice</td><td>23</td></tr><tr><td>BJ</td><td>Benin</td><td>Benin</td><td>24</td></tr><tr><td>BU</td><td>Bermudas</td><td>Bermudas</td><td>25</td></tr><tr><td>BK</td><td>Birmania</td><td>Birmania</td><td>26</td></tr><tr><td>BO</td><td>Bolivia</td><td>Boliviana</td><td>27</td></tr><tr><td>BX</td><td>Bosnia Herzegovina</td><td>Bosnia Herzegovina</td><td>28</td></tr><tr><td>BW</td><td>Botswana</td><td>Botswana</td><td>29</td></tr><tr><td>BR</td><td>Brasil</td><td>Brasileño</td><td>30</td></tr><tr><td>BN</td><td>Brunei</td><td>Brunei</td><td>31</td></tr><tr><td>BG</td><td>Bulgaria</td><td>Búlgara</td><td>32</td></tr><tr><td>BF</td><td>Burkina</td><td>Burkina</td><td>33</td></tr><tr><td>BI</td><td>Burundi</td><td>Burundi</td><td>34</td></tr><tr><td>BM</td><td>Bután</td><td>Bután</td><td>35</td></tr><tr><td>CV</td><td>Cabo Verde</td><td>Cabo Verde</td><td>36</td></tr><tr><td>CM</td><td>Camerún</td><td>Camerunés</td><td>37</td></tr><tr><td>CN</td><td>Canadá</td><td>Canadiense</td><td>38</td></tr><tr><td>CU</td><td>Cariacou</td><td>Cariacou</td><td>39</td></tr><tr><td>CD</td><td>Chad</td><td>Chad</td><td>40</td></tr><tr><td>CL</td><td>Chile</td><td>Chilena</td><td>41</td></tr><tr><td>CP</td><td>China</td><td>China</td><td>42</td></tr><tr><td>CY</td><td>Chipre</td><td>Chipre</td><td>43</td></tr><tr><td>VC</td><td>Ciudad del Vaticano</td><td>Ciudad del Vaticano</td><td>44</td></tr><tr><td>CB</td><td>Colombia</td><td>Colombiana</td><td>45</td></tr><tr><td>CJ</td><td>Comoros</td><td>Comoros</td><td>46</td></tr><tr><td>CG</td><td>Congo</td><td>Congo</td><td>47</td></tr><tr><td>CC</td><td>Córcega</td><td>Córcega</td><td>48</td></tr><tr><td>KX</td><td>Corea del Norte</td><td>Corea del Norte</td><td>49</td></tr><tr><td>KR</td><td>Corea del Sur</td><td>Corea del Sur</td><td>50</td></tr><tr><td>IC</td><td>Costa de Marfil</td><td>Costa de Marfil</td><td>51</td></tr><tr><td>HX</td><td>Croacia</td><td>Croata</td><td>52</td></tr><tr><td>HR</td><td>Cuba</td><td>Cubana</td><td>53</td></tr><tr><td>DK</td><td>Dinamarca</td><td>Danés</td><td>54</td></tr><tr><td>DJ</td><td>Djibouti</td><td>Djibouti</td><td>55</td></tr><tr><td>DM</td><td>Rep. Dominicana</td><td>Dominicana</td><td>56</td></tr><tr><td>EC</td><td>Ecuador</td><td>Ecuador</td><td>57</td></tr><tr><td>EG</td><td>Egipto</td><td>Egipcia</td><td>58</td></tr><tr><td>SV</td><td>El Salvador</td><td>Salvadoreña</td><td>59</td></tr><tr><td>UM</td><td>Emiratos Árabes Unidos</td><td>Arabe</td><td>60</td></tr><tr><td>ES</td><td>España</td><td>Española</td><td>61</td></tr><tr><td>US</td><td>Estados Unidos</td><td>Estadounidense</td><td>62</td></tr><tr><td>XN</td><td>Eslovenia</td><td>Eslovenia</td><td>63</td></tr><tr><td>SU</td><td>Estonia</td><td>Estonia</td><td>64</td></tr><tr><td>ET</td><td>Etiopía</td><td>Etiopía</td><td>65</td></tr><tr><td>FJ</td><td>Fiji</td><td>Fiji</td><td>66</td></tr><tr><td>PH</td><td>Filipinas</td><td>Filipinas</td><td>67</td></tr><tr><td>FI</td><td>Finlandia</td><td>Finés</td><td>68</td></tr><tr><td>FR</td><td>Francia</td><td>Francés</td><td>69</td></tr><tr><td>GB</td><td>Gabon</td><td>Gabon</td><td>70</td></tr><tr><td>WT</td><td>Gales</td><td>Gales</td><td>71</td></tr><tr><td>GM</td><td>Gambia</td><td>Gambia</td><td>72</td></tr><tr><td>GH</td><td>Ghana</td><td>Ghana</td><td>73</td></tr><tr><td>GI</td><td>Gibraltar</td><td>Gibraltar</td><td>74</td></tr><tr><td>GD</td><td>Granada</td><td>Granada</td><td>75</td></tr><tr><td>GR</td><td>Grecia</td><td>Griega</td><td>76</td></tr><tr><td>GE</td><td>Groenlandia</td><td>Groenlandia</td><td>77</td></tr><tr><td>GP</td><td>Guadalupe</td><td>Guadalupe</td><td>78</td></tr><tr><td>GT</td><td>Guatemala</td><td>Guatemalteco</td><td>79</td></tr><tr><td>GY</td><td>Guyana</td><td>Guyana</td><td>80</td></tr><tr><td>GF</td><td>Guayana Francesa</td><td>Guayana Francesa</td><td>81</td></tr><tr><td>GN</td><td>Guinea</td><td>Guinea</td><td>82</td></tr><tr><td>GW</td><td>Guinea Bissau</td><td>Guinea Bissai</td><td>83</td></tr><tr><td>GQ</td><td>Guinea Ecuatorial</td><td>Guinea Ecuatorial</td><td>84</td></tr><tr><td>HA</td><td>Haití</td><td>Haitiana</td><td>85</td></tr><tr><td>NL</td><td>Holanda</td><td>Holandesa</td><td>86</td></tr><tr><td>HN</td><td>Honduras</td><td>Hondureña</td><td>87</td></tr><tr><td>HK</td><td>Hong Kong</td><td>Hong Kong</td><td>88</td></tr><tr><td>HU</td><td>Hungria</td><td>Hungara</td><td>89</td></tr><tr><td>IB</td><td>India</td><td>India</td><td>90</td></tr><tr><td>IF</td><td>Indonesia</td><td>Indonesia</td><td>91</td></tr><tr><td>IR</td><td>Irán</td><td>Iraní</td><td>92</td></tr><tr><td>IQ</td><td>Irak</td><td>Iraquíes</td><td>93</td></tr><tr><td>IE</td><td>Irlanda</td><td>Irlandesa</td><td>94</td></tr><tr><td>IS</td><td>Islandia</td><td>Islandia</td><td>95</td></tr><tr><td>CI</td><td>Islas Caiman</td><td>Islas Caiman</td><td>96</td></tr><tr><td>LE</td><td>Islas de  Sotavento</td><td>Islas de Sotavento</td><td>97</td></tr><tr><td>FA</td><td>Islas Malvinas</td><td>Islas Malvinas</td><td>98</td></tr><tr><td>FE</td><td>Islas Faroe</td><td>Islas Faroe</td><td>99</td></tr><tr><td>PS</td><td>Islas Pitcairn</td><td>Islas Pitcairn</td><td>100</td></tr><tr><td>RE</td><td>Islas Reunión</td><td>Islas Reunión</td><td>101</td></tr><tr><td>ST</td><td>Islas Santa Cruz</td><td>Islas Santa Cruz</td><td>102</td></tr><tr><td>SI</td><td>Islas Salmón</td><td>Islas Salmón</td><td>103</td></tr><tr><td>VG</td><td>Islas Vírgenes Inglesas</td><td>Islas Vírgenes Inglesas</td><td>104</td></tr><tr><td>IG</td><td>Israel</td><td>Israelí</td><td>105</td></tr><tr><td>IT</td><td>Italia</td><td>Italiano</td><td>106</td></tr><tr><td>JM</td><td>Jamaica</td><td>Jamaicano</td><td>107</td></tr><tr><td>JP</td><td>Japón</td><td>Japón</td><td>108</td></tr><tr><td>JO</td><td>Jordania</td><td>Jordano</td><td>109</td></tr><tr><td>KA</td><td>Kampuchea</td><td>Kampuchea</td><td>110</td></tr><tr><td>OA</td><td>Katar</td><td>Katar</td><td>111</td></tr><tr><td>KE</td><td>Kenya</td><td>Kenya</td><td>112</td></tr><tr><td>KI</td><td>Kiribati</td><td>Kiribati</td><td>113</td></tr><tr><td>KW</td><td>Kuwait</td><td>Kuwait</td><td>114</td></tr><tr><td>LO</td><td>Laos</td><td>Laos</td><td>115</td></tr><tr><td>LS</td><td>Lesotho</td><td>Lesotho</td><td>116</td></tr><tr><td>LX</td><td>Letonia</td><td>Letonia</td><td>117</td></tr><tr><td>LB</td><td>Libano</td><td>Libano</td><td>118</td></tr><tr><td>LR</td><td>Liberia</td><td>Liberia</td><td>119</td></tr><tr><td>LV</td><td>Libia</td><td>Libia</td><td>120</td></tr><tr><td>CH</td><td>Liechtenstein</td><td>Liechtenstein</td><td>121</td></tr><tr><td>LT</td><td>Lituania</td><td>Lituania</td><td>122</td></tr><tr><td>LU</td><td>Luxemburgo</td><td>Luxemburgo</td><td>123</td></tr><tr><td>MJ</td><td>Macao</td><td>Macao</td><td>124</td></tr><tr><td>MH</td><td>Maceodnia</td><td>Macedonia</td><td>125</td></tr><tr><td>MG</td><td>Madagascar</td><td>Madagascar</td><td>126</td></tr><tr><td>MD</td><td>Madeira</td><td>Madeira</td><td>127</td></tr><tr><td>MY</td><td>Malasia</td><td>Malasia</td><td>128</td></tr><tr><td>MW</td><td>Malawi</td><td>Malawi</td><td>129</td></tr><tr><td>MV</td><td>Maldivias</td><td>Maldivias</td><td>130</td></tr><tr><td>ML</td><td>Malí</td><td>Malí</td><td>131</td></tr><tr><td>MT</td><td>Malta</td><td>Malta</td><td>132</td></tr><tr><td>RC</td><td>Marruecos</td><td>Marroquí</td><td>132</td></tr><tr><td>MQ</td><td>Martinico</td><td>Martinico</td><td>133</td></tr><tr><td>MU</td><td>Mauricio</td><td>Mauricio</td><td>134</td></tr><tr><td>MR</td><td>Mauritania</td><td>Mauritania</td><td>135</td></tr><tr><td>MR</td><td>Mauritania</td><td>Mauritania</td><td>136</td></tr><tr><td>AF</td><td>Afganistan</td><td>Afgana</td><td>137</td></tr><tr><td>MC</td><td>Mongolia</td><td>Molgola</td><td>138</td></tr><tr><td>MM</td><td>Montenegro</td><td>Montenegro</td><td>139</td></tr><tr><td>MK</td><td>Montserrat</td><td>Montserrat</td><td>140</td></tr><tr><td>MZ</td><td>Mozambique</td><td>Mozambique</td><td>141</td></tr><tr><td>NA</td><td>Nauru</td><td>Nauru</td><td>142</td></tr><tr><td>NP</td><td>Nepal</td><td>Nepal</td><td>143</td></tr><tr><td>NI</td><td>Nicaragua</td><td>Nicaragua</td><td>144</td></tr><tr><td>NR</td><td>Nigueria</td><td>Nigueria</td><td>145</td></tr><tr><td>NO</td><td>Noruega</td><td>Noruega</td><td>146</td></tr><tr><td>NW</td><td>Nueva Caledonia</td><td>Nueva Caledonia</td><td>147</td></tr><tr><td>NZ</td><td>Nueva Zelandia</td><td>Nueva Zelandia</td><td>148</td></tr><tr><td>OM</td><td>Oman</td><td>Oman</td><td>149</td></tr><tr><td>PK</td><td>Pakistan</td><td>Pakistan</td><td>150</td></tr><tr><td>PM</td><td>Panamá</td><td>Panameño</td><td>151</td></tr><tr><td>PG</td><td>Papua Nueva Guinea</td><td>Papua Nueva Guinea</td><td>152</td></tr><tr><td>PY</td><td>Paraguay</td><td>Paraguayo</td><td>153</td></tr><tr><td>PU</td><td>Perú</td><td>Peruano</td><td>154</td></tr><tr><td>PL</td><td>Polonia</td><td>Polaco</td><td>155</td></tr><tr><td>FP</td><td>Polinesia</td><td>Polinesia</td><td>156</td></tr><tr><td>PT</td><td>Portugal</td><td>Portugues</td><td>157</td></tr><tr><td>UK</td><td>Reino Unido</td><td>Reino Unido</td><td>158</td></tr><tr><td>CF</td><td>Rep. Central Africana</td><td>Rep. Central Africana</td><td>159</td></tr><tr><td>CS</td><td>Rep. Checa Eslovaca</td><td>Rep. Checa Eslovaca</td><td>160</td></tr><tr><td>GX</td><td>Rep. de Georgia</td><td>Rep. de Georgia</td><td>161</td></tr><tr><td>DO</td><td>Rep. Dominicana</td><td>Rep. Dominicana</td><td>162</td></tr><tr><td>RO</td><td>Rumania</td><td>Rumana</td><td>163</td></tr><tr><td>RU</td><td>Rusia</td><td>Rusa</td><td>164</td></tr><tr><td>RW</td><td>Rwanda</td><td>Rwanda</td><td>165</td></tr><tr><td>WS</td><td>Samoa Oeste</td><td>Samoa Oeste</td><td>166</td></tr><tr><td>KN</td><td>San Cristobal de Nevais</td><td>San Cristobal de Nevais</td><td>167</td></tr><tr><td>SS</td><td>San Kitts</td><td>San Kitts</td><td>168</td></tr><tr><td>SP</td><td>San Pierre y Miquelon</td><td>san Pierre y Miquelon</td><td>169</td></tr><tr><td>SF</td><td>San Vincent y las Granadas</td><td>San Vincent y las Granadas</td><td>170</td></tr><tr><td>SH</td><td>Santa Helena</td><td>Santa Helena</td><td>171</td></tr><tr><td>LC</td><td>Santa Lucia</td><td>Santa Lucia</td><td>172</td></tr><tr><td>MP</td><td>Sao Tome y Principado</td><td>Sao Tome y Principado</td><td>173</td></tr><tr><td>SN</td><td>Senegal</td><td>Senegal</td><td>174</td></tr><tr><td>SX</td><td>Serbia</td><td>Serbia</td><td>175</td></tr><tr><td>SY</td><td>Siria</td><td>Siria</td><td>176</td></tr><tr><td>SO</td><td>Somalia</td><td>Somalia</td><td>177</td></tr><tr><td>LK</td><td>Sri Lanka</td><td>Sri Lanka</td><td>178</td></tr><tr><td>SB</td><td>Sudan</td><td>Sudan</td><td>179</td></tr><tr><td>SE</td><td>Suecia</td><td>Sueco</td><td>180</td></tr><tr><td>SW</td><td>Suiza</td><td>Suiza</td><td>181</td></tr><tr><td>SR</td><td>Surinam</td><td>Surinam</td><td>182</td></tr><tr><td>SZ</td><td>Swazilandia</td><td>Swazilandia</td><td>183</td></tr><tr><td>TH</td><td>Tailandia</td><td>Tailandia</td><td>184</td></tr><tr><td>TW</td><td>Taiwan</td><td>Taiwan</td><td>185</td></tr><tr><td>TZ</td><td>Tanzania</td><td>Tanzania</td><td>186</td></tr><tr><td>EM</td><td>Timor Oriental</td><td>Timor Oriental</td><td>187</td></tr><tr><td>TG</td><td>Togo</td><td>Togo</td><td>188</td></tr><tr><td>TA</td><td>Tonga</td><td>Tonga</td><td>189</td></tr><tr><td>TT</td><td>Trinidad y Tobago</td><td>Trinidad y Tobago</td><td>190</td></tr><tr><td>TD</td><td>Tristán de Cunha</td><td>Tristán de Cunha</td><td>191</td></tr><tr><td>TU</td><td>Tunez</td><td>Tunez</td><td>192</td></tr><tr><td>TC</td><td>Turcos e Islas Caicos</td><td>Turcos e Islas Caicos</td><td>193</td></tr><tr><td>TR</td><td>Turquía</td><td>Turca</td><td>194</td></tr><tr><td>TV</td><td>Tuvala</td><td>Tuvala</td><td>195</td></tr><tr><td>UG</td><td>Uganda</td><td>Uganda</td><td>196</td></tr><tr><td>UA</td><td>Ucrania</td><td>Ucraniano</td><td>197</td></tr><tr><td>UY</td><td>Uruguay</td><td>Uruguayo</td><td>198</td></tr><tr><td>VU</td><td>Vanuatu</td><td>Vanuatu</td><td>199</td></tr><tr><td>VE</td><td>Venezuela</td><td>Venezolana</td><td>200</td></tr><tr><td>VN</td><td>Vietnam</td><td>Vietnami</td><td>201</td></tr><tr><td>YS</td><td>Yemen del Norte</td><td>Yemen del Norte</td><td>202</td></tr><tr><td>YE</td><td>Yemen del Sur</td><td>Yemen del Sur</td><td>203</td></tr><tr><td>ZR</td><td>Zaire</td><td>Zaire</td><td>204</td></tr><tr><td>ZM</td><td>Zambia</td><td>Zambia</td><td>205</td></tr><tr><td>ZW</td><td>Zimbabwe</td><td>Zimbabwe</td><td>206</td></tr><tr><td>ND</td><td>No Definido</td><td>No Definido</td><td>1000</td></tr></tbody></table></p>"
+      example: "MX"
+      enum:
+        - "MX"
+        - "ZA"
+        - "AN"
+        - "DW"
+        - "AD"
+        - "AO"
+        - "AI"
+        - "AG"
+        - "NN"
+        - "SA"
+        - "DZ"
+        - "AT"
+        - "AW"
+        - "AS"
+        - "AU"
+        - "DF"
+        - "AX"
+        - "BS"
+        - "BH"
+        - "BD"
+        - "BB"
+        - "BE"
+        - "BZ"
+        - "BJ"
+        - "BU"
+        - "BK"
+        - "BO"
+        - "BX"
+        - "BW"
+        - "BR"
+        - "BN"
+        - "BG"
+        - "BF"
+        - "BI"
+        - "BM"
+        - "CV"
+        - "CM"
+        - "CN"
+        - "CU"
+        - "CD"
+        - "CL"
+        - "CP"
+        - "CY"
+        - "VC"
+        - "CB"
+        - "CJ"
+        - "CG"
+        - "CC"
+        - "KX"
+        - "KR"
+        - "IC"
+        - "HX"
+        - "HR"
+        - "DK"
+        - "DJ"
+        - "DM"
+        - "EC"
+        - "EG"
+        - "SV"
+        - "UM"
+        - "ES"
+        - "US"
+        - "XN"
+        - "SU"
+        - "ET"
+        - "FJ"
+        - "PH"
+        - "FI"
+        - "FR"
+        - "GB"
+        - "WT"
+        - "GM"
+        - "GH"
+        - "GI"
+        - "GD"
+        - "GR"
+        - "GE"
+        - "GP"
+        - "GT"
+        - "GY"
+        - "GF"
+        - "GN"
+        - "GW"
+        - "GQ"
+        - "HA"
+        - "NL"
+        - "HN"
+        - "HK"
+        - "HU"
+        - "IB"
+        - "IF"
+        - "IR"
+        - "IQ"
+        - "IE"
+        - "IS"
+        - "CI"
+        - "LE"
+        - "FA"
+        - "FE"
+        - "PS"
+        - "RE"
+        - "ST"
+        - "SI"
+        - "VG"
+        - "IG"
+        - "IT"
+        - "JM"
+        - "JP"
+        - "JO"
+        - "KA"
+        - "OA"
+        - "KE"
+        - "KI"
+        - "KW"
+        - "LO"
+        - "LS"
+        - "LX"
+        - "LB"
+        - "LR"
+        - "LV"
+        - "CH"
+        - "LT"
+        - "LU"
+        - "MJ"
+        - "MH"
+        - "MG"
+        - "MD"
+        - "MY"
+        - "MW"
+        - "MV"
+        - "ML"
+        - "MT"
+        - "RC"
+        - "MQ"
+        - "MU"
+        - "MR"
+        - "AF"
+        - "MC"
+        - "MM"
+        - "MK"
+        - "MZ"
+        - "NA"
+        - "NP"
+        - "NI"
+        - "NR"
+        - "NO"
+        - "NW"
+        - "NZ"
+        - "OM"
+        - "PK"
+        - "PM"
+        - "PG"
+        - "PY"
+        - "PU"
+        - "PL"
+        - "FP"
+        - "PT"
+        - "UK"
+        - "CF"
+        - "CS"
+        - "GX"
+        - "DO"
+        - "RO"
+        - "RU"
+        - "RW"
+        - "WS"
+        - "KN"
+        - "SS"
+        - "SP"
+        - "SF"
+        - "SH"
+        - "LC"
+        - "MP"
+        - "SN"
+        - "SX"
+        - "SY"
+        - "SO"
+        - "LK"
+        - "SB"
+        - "SE"
+        - "SW"
+        - "SR"
+        - "SZ"
+        - "TH"
+        - "TW"
+        - "TZ"
+        - "EM"
+        - "TG"
+        - "TA"
+        - "TT"
+        - "TD"
+        - "TU"
+        - "TC"
+        - "TR"
+        - "TV"
+        - "UG"
+        - "UA"
+        - "UY"
+        - "VU"
+        - "VE"
+        - "VN"
+        - "YS"
+        - "YE"
+        - "ZR"
+        - "ZM"
+        - "ZW"
+        - "ND"
+    CatalogoEstados:
+      type: string
+      description: "Estado en que se ubica el domicilio <table><thead><tr><th>Clave</th><th>Estado</th></tr></thead><tbody><tr><td>AGS</td><td>AGUASCALIENTES</td></tr><tr><td>BC</td><td>BAJA CALIFORNIA NORTE</td></tr><tr><td>BCS</td><td>BAJA CALIFORNIA SUR</td></tr><tr><td>CAMP</td><td>CAMPECHE</td></tr><tr><td>CDMX</td><td>CIUDAD DE MÉXICO</td></tr><tr><td>CHIS</td><td>CHIAPAS</td></tr><tr><td>CHIH</td><td>CHIHUAHUA</td></tr><tr><td>COAH</td><td>COHAHUILA</td></tr><tr><td>COL</td><td>COLIMA</td></tr><tr><td>DF</td><td>DISTRITO FEDERAL</td></tr><tr><td>DGO</td><td>DURANGO</td></tr><tr><td>GTO</td><td>GUANAJUATO</td></tr><tr><td>GRO</td><td>GUERRERO</td></tr><tr><td>HGO</td><td>HIDALGO</td></tr><tr><td>JAL</td><td>JALISCO</td></tr><tr><td>MEX</td><td>MÉXICO</td></tr><tr><td>MICH</td><td>MICHOCÁN</td></tr><tr><td>MOR</td><td>MORELOS</td></tr><tr><td>NAY</td><td>NAYARIT</td></tr><tr><td>NL</td><td>NUEVO LEÓN</td></tr><tr><td>OAX</td><td>OAXACA</td></tr><tr><td>PUE</td><td>PUEBLA</td></tr><tr><td>QRO</td><td>QUERÉTARO</td></tr><tr><td>QROO</td><td>QUINTANA ROO</td></tr><tr><td>SLP</td><td>SAN LUIS POTOSÍ</td></tr><tr><td>SIN</td><td>SINALOA</td></tr><tr><td>SON</td><td>SONORA</td></tr><tr><td>TAB</td><td>TABASCO</td></tr><tr><td>TAMP</td><td>TAMAULIPAS</td></tr><tr><td>TLAX</td><td>TLAXCALA</td></tr><tr><td>VER</td><td>VERACRUZ</td></tr><tr><td>YUC</td><td>YUCATÁN</td></tr><tr><td>ZAC</td><td>ZACATECAS</td></tr></tbody></table>"
+      example: "PUE"
+      enum:
+        - "AGS"
+        - "BC"
+        - "BCS"
+        - "CAMP"
+        - "COAH"
+        - "COL"
+        - "CHIS"
+        - "CHIH"
+        - "DF"
+        - "CDMX"
+        - "DGO"
+        - "GTO"
+        - "GRO"
+        - "HGO"
+        - "JAL"
+        - "MEX"
+        - "MICH"
+        - "MOR"
+        - "NAY"
+        - "NL"
+        - "OAX"
+        - "PUE"
+        - "QRO"
+        - "QROO"
+        - "SLP"
+        - "SIN"
+        - "SON"
+        - "TAB"
+        - "TAMP"
+        - "TLAX"
+        - "VER"
+        - "YUC"
+        - "ZAC"
+    RequestObtener:
+      type: object
+      required: 
+        - folioMatch
+        - apellidoPaterno
+        - primerNombre
+        - domicilio
+      properties:
+        folioMatch:
+          type: string
+          maxLength: 15
+          pattern: (^[A-Za-z0-9]+)$
+          example: "108342"
+        apellidoPaterno:
+          type: string
+          maxLength: 25
+          pattern: (^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\\,.\- ]+)$
+          example: "OSORIO"
+        apellidoMaterno:
+          type: string
+          maxLength: 25
+          pattern: (^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\\,.\- ]+)$
+          example: "CHONG"
+        primerNombre:
+          type: string
+          maxLength: 25
+          pattern: (^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\\,.\- ]+)$
+          example: "MIGUEL"
+        segundoNombre:
+          type: string
+          maxLength: 25
+          pattern: (^[A-Za-záéíóúÁÉÍÓÚñÑüÜ\\,.\- ]+)$
+          example: "ANGEL"
+        telefonoCelular:
+          maxLength: 12
+          pattern: (^[0-9]+)$
+          type: string
+          description: 'Debe de contener una longitud mínima de 10 caracteres. Cada carácter debe ser un número de 0-9, si se ingresa cualquier otro carácter el registro será rechazado.'
+          example: "7442368738"
+        fechaNacimiento:
+          type: string
+          pattern: ^[0-9]{2}-[0-9]{2}-[0-9]{4}$
+          example: "04-01-1980"
+        rfc:
+          type: string
+          pattern: (^[A-Za-z0-9]+)$
+          maxLength: 13
+          example: "PUCJ960131"
+        domicilio:
+          type: array
+          description: 'Lista con Objetos con la informacion de domicilio.'
+          items:
+            type: object
+            required:
+              - cp
+              - estado
+              - direccion
+            properties: 
+              estado:
+                $ref: '#/components/schemas/CatalogoEstados'
+              delegacionMunicipio:
+                type: string
+                maxLength: 65
+                pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$" 
+                example: "CUETZALAN DEL PROGRESO"
+              ciudad:
+                type: string
+                maxLength: 65
+                pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$" 
+                example: "CUETZALAN DEL PROGRESO"
+              direccion:
+                type: string
+                maxLength: 85
+                pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+                example: "GOMEZ FARIAS 10"
+              cp: 
+                type: string
+                pattern: (^[0-9]+)$
+                description: 'El código postal reportado debeestar compuesto por 5 dígitos. Para que el código postal sea válido deberá corresponder al estado reportado.'
+                minLength: 5
+                maxLength: 5
+                example: "73560"
+              colonia:
+                type: string
+                maxLength: 65
+                pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+                example: "CUETZALAN DEL PROGRESO"
+              pais:
+                $ref: '#/components/schemas/CatalogoPaisNacionalidad'
+    RequestAutenticar:
+      type: object
+      required:
+        - id
+        - respuestasAutomotriz
+        - respuestasHipotecarias
+        - respuestasTarjetasCrediticias
+      properties:
+        id:
+          type: string
+          maxLength: 30
+          pattern: (^[A-Za-z0-9]+)$
+          example: "5635"
+        respuestas:
+          type: array
+          items:
+            type: object
+            properties:
+              numeroDeOtorgante:
+                type: string
+                example: '000009'
+              nombreDeOtorgante:
+                type: string
+                example: 'BANCO AZTECA'
+              tipoDeCredito:
+                type: string
+                example: 'AUTOMOTRIZ'
+              limiteDeCredito:
+                type: integer
+                example: 4000
+              numeroCuenta:
+                type: string
+                maxLength: 65
+                example: "123456"
+              seleccionada:
+                type: boolean
+                example: true
+        respuestasAutomotriz:
+          type: array
+          items:
+            type: object
+            properties:
+              numeroDeOtorgante:
+                type: string
+                example: '000009'
+              nombreDeOtorgante:
+                type: string
+                example: 'BANCO AZTECA'
+              tipoDeCredito:
+                type: string
+                example: 'AUTOMOTRIZ'
+              limiteDeCredito:
+                type: integer
+                example: 10000
+              numeroCuenta:
+                type: string
+                maxLength: 65
+                example: "123456"
+              seleccionada:
+                type: boolean
+                example: true
+        respuestasHipotecarias:
+          type: array
+          items:
+            type: object
+            properties:
+              numeroDeOtorgante:
+                type: string
+                example: '000009'
+              nombreDeOtorgante:
+                type: string
+                example: 'BANCO AZTECA'
+              tipoDeCredito:
+                type: string
+                example: 'HIPOTECARIO'
+              limiteDeCredito:
+                type: integer
+                example: 10000
+              numeroCuenta:
+                type: string
+                maxLength: 65
+                example: "123456"
+              seleccionada:
+                type: boolean
+                example: true
+        respuestasTarjetasCrediticias:
+          type: array
+          items:
+            type: object
+            properties:
+              numeroDeOtorgante:
+                type: string
+                example: '000009'
+              nombreDeOtorgante:
+                type: string
+                example: 'BANCO AZTECA'
+              tipoDeCredito:
+                type: string
+                example: 'TARJETA_CREDITICIA'
+              limiteDeCredito:
+                type: integer
+                example: 10000
+              numeroCuenta:
+                type: string
+                maxLength: 65
+                example: "123456"
+              seleccionada:
+                type: boolean
+                example: true
+    RequestAutenticarPM:
+      type: object
+      required:
+        - id
+        - nperscve
+        - respuestas
+      properties:
+        folioMatch:
+          type: string 
+          example: "526895"
+        id:
+          type: string
+          maxLength: 30
+          pattern: (^[A-Za-z0-9]+)$
+          example: "5635"
+        nperscve:
+          type: string
+          maxLength: 12
+          pattern: (^[0-9]+)$
+          example: "167084740"
+        respuestas:
+          example:
+            - numeroDeOtorgante: '000882'
+              nombreDeOtorgante: 'MIXUP'
+              tipoDeCredito: '1'
+              seleccionada: true
+              tipoMoneda: 'MX'
+              fechaApertura: '09/2008'
+              fechaDisposicion: null
+    RequestPM:
+      type: object
+      required: 
+        - nombre
+        - rfc
+      properties:
+        folioMatch:
+          type: string 
+          example: "526895"
+        nombre:
+          type: string
+          maxLength: 100
+          pattern: (^[A-Za-záéíóúÁÉÍÓÚñÑüÜ0-9\\,.\- ]+)$
+          example: "EMPRESA TESTER SA DE CV"
+        rfc:
+          type: string
+          pattern: (^[A-Za-z0-9]+)$
+          maxLength: 12
+          minLength: 12
+          example: "ETS980201AN1"
+        direccion:
+          type: string
+          maxLength: 85
+          pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+          example: "CALLE DEL CENTENO 14 0"  
+        colonia:
+          type: string
+          maxLength: 65
+          pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+          example: "LAS PALMAS"    
+        delegacionMunicipio:
+          type: string
+          maxLength: 65
+          pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+          example: "CUAJIMALPA DE MORELOS"
+        ciudad:
+          type: string
+          maxLength: 65
+          pattern: "^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ().,\\-#\\s]+$"
+          example: "CUAJIMALPA DE MORELOS"
+        estado:
+          $ref: '#/components/schemas/CatalogoEstados'
+        pais:
+          $ref: '#/components/schemas/CatalogoPaisNacionalidad'      
+        cp: 
+          type: string
+          pattern: (^[0-9]+)$
+          description: 'El código postal reportado debeestar compuesto por 5 dígitos. Para que el código postal sea válido deberá corresponder al estado reportado.'
+          minLength: 5
+          maxLength: 5
+          example: "73560"
+    RespuestaAutenticar:
+      type: object
+      properties:
+        httpStatus:
+          type: integer
+          example: 200
+        success: 
+          type: boolean
+          example: true
+        message: 
+          type: string
+          example: 'Success'
+        errors: 
+          type: string
+          example: null
+        data:
+          type: object
+          properties:
+            isAuthenticated:
+              type: boolean
+              example: true
+    RespuestaObtener:
+      type: object
+      properties:
+        httpStatus:
+          type: integer
+          example: 200
+        success: 
+          type: boolean
+          example: true
+        message: 
+          type: string
+          example: 'Success'
+        errors: 
+          type: string
+          example: null
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '5655'
+            preguntas:
+              type: array
+              items:
+                type: object
+                properties:
+                  numeroDeOtorgante:
+                    type: string
+                    example: '000009'
+                  nombreDeOtorgante:
+                    type: string
+                    example: 'BANCO AZTECA'
+                  tipoDeCredito:
+                    type: string
+                    example: 'AUTOMOTRIZ'
+            preguntasAutomotriz:
+              type: array
+              items:
+                type: object
+                properties:
+                  numeroDeOtorgante:
+                    type: string
+                    example: '000009'
+                  nombreDeOtorgante:
+                    type: string
+                    example: 'BANCO AZTECA'
+                  tipoDeCredito:
+                    type: string
+                    example: 'AUTOMOTRIZ'
+            preguntasHipotecarias:
+              type: array
+              items:
+                type: object
+                properties:
+                  numeroDeOtorgante:
+                    type: string
+                    example: '000009'
+                  nombreDeOtorgante:
+                    type: string
+                    example: 'BANCO AZTECA'
+                  tipoDeCredito:
+                    type: string
+                    example: 'HIPOTECARIO'
+            preguntasTarjetasCrediticias:
+              type: array
+              items:
+                type: object
+                properties:
+                  numeroDeOtorgante:
+                    type: string
+                    example: '000009'
+                  nombreDeOtorgante:
+                    type: string
+                    example: 'BANCO AZTECA'
+                  tipoDeCredito:
+                    type: string
+                    example: 'TARJETA_CREDITICIA'
+    RespuestaObtenerPM:
+      type: object
+      properties:
+        httpStatus:
+          type: integer
+          example: 200
+        success: 
+          type: boolean
+          example: true
+        message: 
+          type: string
+          example: 'Success'
+        nperscve: 
+          type: string
+          example: '167084740'
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '6764'
+            preguntas:
+              example:
+                - numeroDeOtorgante: '000001'
+                  nombreDeOtorgante: 'BANCO AZTECA'
+                  tipoDeCredito: '1'
+                - numeroDeOtorgante: '0'
+                  nombreDeOtorgante: 'INVIDF'
+                  tipoDeCredito: 'RESPUESTA_DUMMY'
+                - numeroDeOtorgante: '000001'
+                  nombreDeOtorgante: 'SEARS'
+                  tipoDeCredito: '1'

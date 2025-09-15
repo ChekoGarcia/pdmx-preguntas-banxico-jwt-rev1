@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OASValidation continueOnError="true" enabled="true" name="OAS-ValidateContract">
+    <DisplayName>OAS-ValidateContract</DisplayName>
+    <Source>request</Source>
+    <OASResource>oas://PDMX-Preguntas-Banxico.yaml</OASResource>
+    <Options>
+        <ValidateMessageBody>true</ValidateMessageBody>
+     </Options>
+</OASValidation>
